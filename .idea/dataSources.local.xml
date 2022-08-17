@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="default@47.96.180.123" uuid="bede60af-04fa-4bae-8038-756aed862830">
+      <database-info product="ClickHouse" version="22.7.3.5" jdbc-version="0.1" driver-name="ru.yandex.clickhouse-jdbc" driver-version="0.1.50" dbms="CLICKHOUSE" exact-version="22.7.3.5" exact-driver-version="0.1">
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>default</user-name>
+      <introspection-schemas>*:@</introspection-schemas>
+    </data-source>
+  </component>
+</project>

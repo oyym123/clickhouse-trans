@@ -1,0 +1,20 @@
+2022-08-16 16:45:48 | qq_access 表添加成功！
+CREATE TABLE default.qq_access
+(
+    `id` Int32,
+    `user_id` Int32,
+    `access_origin` String,
+    `create_time` Int32
+)
+ENGINE = Memory
+
+2022-08-17 09:25:17 | qq_access 表添加成功！
+CREATE TABLE default.qq_access
+(
+    `id` Int32,
+    `user_id` Int32,
+    `access_origin` String,
+    `create_time` Int32
+)
+ENGINE = Memory
+
