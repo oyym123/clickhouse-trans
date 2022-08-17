@@ -19,24 +19,25 @@ PHP  脚本  mysql 全量 &amp; 增量传输数据到 clickhouse  超轻量级�
 
 ## **命令行**
 
-  * 创建clickhouse表 【-a 方法名   -b 类型id】 </br>
+  * 【-a 方法名   -b 类型id】 创建clickhouse表 
     * ``` php index.php  -a=createTable -b=10 ```
 
-  * 全量同步数据 【数据不宜超过500万】 大数据量请使用 incrementalDataBySelf() 方法分批导入     
+  * 【全量同步数据 数据不宜超过500万】大数据量请使用 incrementalDataBySelf() 方法分批导入     
     * ``` php index.php  -a=initData -b=10 ```
 
-  * 每小时第5分钟跑  上个小时之间的数据 【按小时 增量同步】
+  * 【按小时 增量同步】每小时第5分钟跑  上个小时之间的数据 
     * ``` 5 * * * * php index.php  -a=incrementalDataByHour -b=10 ```
 
-  * 定时任务 每天凌晨2点同步数据  【按天 增量同步】
+  * 【按天 增量同步】定时任务 每天凌晨2点同步数据  
      * ``` 0 2 * * * php index.php  -a=incrementalDataByHour -b=10 ```
 
-  * 新增指定日期间的数据 最小维度天 【-c 起始时间  -d 结束时间  -e (day:按天跑 month:按月跑)】
+  * 【-c 起始时间  -d 结束时间  -e (day:按天跑 month:按月跑)】新增指定日期间的数据 最小维度 【天】 
      * ``` php index.php -a=incrementalDataBySelf -b=10  -c=2021-11-01 -d=2022-07-01 -e=day ```
        * 按天跑的含义： 会获取 间隔时间内所有的天数，一天天的同步
        * 按月跑的含义： 会获取 间隔时间内所有的月份，一月月的同步
   
-  
+  <img width="1436" alt="image" src="https://user-images.githubusercontent.com/20701868/185028830-ee7c64cb-dd4d-4ebd-9251-fdad5516915c.png">
+
   
   
   
