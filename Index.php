@@ -42,8 +42,8 @@ class Index
     }
 
     /**
-     * php index.php  -f=initData -c=30
-     * 自动建表 全量同步数据 【数据不宜超过200万】 大数据使用 incrementalDataBySelf() 方法分批导入
+     * php index.php  -a=initData -b=30
+     * 全量同步数据 【数据不宜超过200万】 大数据使用 incrementalDataBySelf() 方法分批导入
      * 初始化数据
      */
     public function initData()
