@@ -20,9 +20,9 @@ return [
         'charset' => 'utf8'
     ],
     'ck_conf_default' => [
-        'host' => '47.96.180.123',
+        'host' => '47.96.190.123',
         'port' => '8123',
         'username' => 'default',
-        'password' => '6uiVsIS2'
+        'password' => '6uiVs2S2'
     ]
 ];
