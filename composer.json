@@ -1,0 +1,29 @@
+{
+  "name": "oyym/oss-sdk",
+  "description": "mysql mongo transfer data to clickhouse",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "oyym",
+      "email": "1052016884@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "smi2/phpclickhouse": ">=1.3.8",
+    "ext-json": "*",
+    "ext-iconv": "*",
+    "mongodb/mongodb": "^1.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "TransCk\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TransCk\\Example\\": "example/"
+    }
+  }
+}

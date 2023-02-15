@@ -1,0 +1,11 @@
+2023-02-15 10:43:10 |  表插入成功 2 条数据！其中剔除脏数据 0 条 查询耗时0.044校验耗时0.019秒 整体耗时0.069秒
+
+{
+    "starttransfer_time": 0.003,
+    "size_download": "0 bytes",
+    "speed_download": "0 Mbps",
+    "size_upload": "223 bytes",
+    "upload_content": "223 bytes",
+    "speed_upload": "0.59 Mbps",
+    "time_request": 0.003
+}
