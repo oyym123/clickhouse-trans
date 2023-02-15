@@ -1,5 +1,5 @@
 {
-  "name": "oyym/oss-sdk",
+  "name": "oyym/clickhouse-trans",
   "description": "mysql mongo transfer data to clickhouse",
   "type": "library",
   "license": "MIT",
