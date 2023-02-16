@@ -3,4 +3,3 @@ logs/*
 vendor
 .idea
 .idea/
-vendor/*

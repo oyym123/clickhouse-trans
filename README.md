@@ -11,11 +11,13 @@ PHP  脚本  mysql 全量 &amp; 增量传输数据到 clickhouse  超轻量级�
   * 可以定时同步
   * 自动去重
   * 详细日志
+  
+## **安装**
+```composer require oyym/clickhouse-trans```
 
 ## **配置项**
-  * 在config.php 配置好默认的 mysql、clickhouse 数据库
-  * 在 SqlMappingService.php 中添加需要同步到clickhouse的字段（直接复制建表sql）
-  * 在 Base.php 中填写表的具体配置
+  * 在config.php 配置好默认的 mysql、clickhouse、mongo 数据库
+  * 在Mapping.php 中添加需要同步到clickhouse的字段（直接复制mysql建表sql）
 
 ## **命令行**
 
@@ -35,9 +37,30 @@ PHP  脚本  mysql 全量 &amp; 增量传输数据到 clickhouse  超轻量级�
      * ``` php index.php -a=incrementalDataBySelf -b=10  -c=2021-11-01 -d=2022-07-01 -e=day ```
        * 按天跑的含义： 会获取 间隔时间内所有的天数，一天天的同步
        * 按月跑的含义： 会获取 间隔时间内所有的月份，一月月的同步
-  
-  <img width="1436" alt="image" src="https://user-images.githubusercontent.com/20701868/185028830-ee7c64cb-dd4d-4ebd-9251-fdad5516915c.png">
+ 
+ ## **Laravel安装**
+ ```composer require oyym/clickhouse-trans```
+ ```php
+    public function handle()
+    {
+        //入口函数需要设定 这三个文件的绝对路径
+        putenv("CONFIG_FILE_PATH=" . __DIR__ . '/Config.php');          //日志文件地址
+        putenv("MAPPING_FILE_PATH=" . __DIR__ . '/Mapping.php');        //映射文件地址
+        putenv("LOG_DIR_PATH=" . storage_path() . '/logs/trans/');      //记录日志的目录地址
 
-  
+        //创建表
+        (new CkService(Mapping::TYPE_PRICE_CHANGE_HISTORY))->createTable();
+
+        //初始化数据
+        (new CkService(Mapping::TYPE_PRICE_CHANGE_HISTORY))->insertData();
+
+        //增量更新 每小时第5分钟跑 上个小时之间的数据  5 * * * * php artisan trans
+        (new CkService(Mapping::TYPE_PRICE_CHANGE_HISTORY))->incrementalDataByHour();
+
+        return true;
+    }
+```
+运行 php artisan trans
+ 
   
   

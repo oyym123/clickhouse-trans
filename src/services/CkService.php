@@ -171,17 +171,13 @@ class CkService extends Base
      */
     public function getMysqlData($where = '')
     {
-
         $batchNum = $this->single_search;
         $partList = [];
 
         $tableName = $this->m_table;
         $mysqlDb = new MysqlDb($tableName, $this->m_conf);
-
-        $where = $where ?: ' 1=1 ';
-
-        $totalCount = $mysqlDb->where($where)->select("COUNT(*) as num");
-
+        $whereStr = $this->formatWhere($where);
+        $totalCount = $mysqlDb->where($whereStr)->select("COUNT(*) as num");
         $totalCount = $totalCount[0]['num'];
 
         $num = ceil($totalCount / $batchNum);
@@ -236,17 +232,7 @@ class CkService extends Base
     {
         $primaryKey = $this->primary_key;
         $ckTable = $this->ck_table;
-        $where = $where ? $where : ' 1=1 ';
-        if (is_array($where)) {
-            $whereStr = '';
-            foreach ($where as $key => $value) {
-                $whereStr .= $key . " '" . $value . "' AND ";
-            }
-            $whereStr = trim($whereStr, 'AND ');
-        } else {
-            $whereStr = $where;
-        }
-
+        $whereStr = $this->formatWhere($where);
         $ckData = $this->conn->select("SELECT {$primaryKey} FROM {$ckTable} WHERE {$whereStr} ");
         $ckIds = [];
         if (!empty($ckData->rawData()['data'])) {
@@ -268,6 +254,21 @@ class CkService extends Base
             return [$resData, $dirtyCount];
         }
         return [$data, $dirtyCount];
+    }
+
+    public function formatWhere($where)
+    {
+        $where = $where ? $where : ' 1=1 ';
+        if (is_array($where)) {
+            $whereStr = '';
+            foreach ($where as $key => $value) {
+                $whereStr .= $key . " '" . $value . "' AND ";
+            }
+            $whereStr = trim($whereStr, 'AND ');
+        } else {
+            $whereStr = $where;
+        }
+        return $whereStr;
     }
 }
 
