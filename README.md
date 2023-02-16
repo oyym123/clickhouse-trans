@@ -1,5 +1,5 @@
 # clickhouse-trans
-PHP  脚本  mysql 全量 &amp; 增量传输数据到 clickhouse  超轻量级代码 开箱即用
+PHP  脚本  mysql & mongo 全量 &amp; 增量传输数据到 clickhouse  超轻量级代码 开箱即用
 
 ## **背景**
 * 因业务需求 想用clickhouse做支撑 实现实时统计报表。调研了几个比较出名开源go写的 CDS同步 代码。
