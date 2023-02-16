@@ -40,6 +40,9 @@ PHP  脚本  mysql 全量 &amp; 增量传输数据到 clickhouse  超轻量级�
  
  ## **Laravel安装**
  ```composer require oyym/clickhouse-trans```
+ 
+ 
+ 
  ![Snipaste_2023-02-16_16-46-21](https://user-images.githubusercontent.com/20701868/219314824-737184d6-3f69-43ea-b481-a9d1eb502ae1.png)
 
  ```php
