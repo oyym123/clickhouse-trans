@@ -66,6 +66,8 @@ PHP  脚本  (mysql | mongo) 全量 &amp; 增量传输数据到 clickhouse  超�
     }
 ```
 运行 php artisan trans
+
+其他的框架运行也是一样的，找到php-cli的执行入口 把上面的函数复制进去就行
  
   
   
