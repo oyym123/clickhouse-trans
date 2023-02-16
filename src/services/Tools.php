@@ -52,7 +52,7 @@ class Tools
      */
     public static function writeDayLog($file, $log)
     {
-        $varLogPath = __DIR__ . '/../logs/';
+        $varLogPath = getenv('LOG_DIR_PATH');
         if (!is_dir($varLogPath)) {
             mkdir(iconv("UTF-8", "GBK", $varLogPath), 0777, true);
         }
@@ -68,7 +68,7 @@ class Tools
      */
     public static function writeLog($file, $log)
     {
-        $varLogPath = __DIR__ . '/../logs/';
+        $varLogPath = getenv('LOG_DIR_PATH');
         if (!is_dir($varLogPath)) {
             mkdir(iconv("UTF-8", "GBK", $varLogPath), 0777, true);
         }

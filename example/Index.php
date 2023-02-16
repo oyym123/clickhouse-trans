@@ -20,7 +20,7 @@ class Index
         //入口函数需要设定 这两个文件的绝对路径
         putenv("CONFIG_FILE_PATH=" . __DIR__ . '/Config.php');   //日志文件地址
         putenv("MAPPING_FILE_PATH=" . __DIR__ . '/Mapping.php'); //映射文件地址
-        putenv("LOG_DIR_PATH=" . __DIR__ . '/../src/logs');      //记录日志的目录地址
+        putenv("LOG_DIR_PATH=" . __DIR__ . '/../src/logs/');      //记录日志的目录地址
 
         //以下仅为PHP cli命令行测试 ， 使用Laravel 、Yii2 等框架 可以使用其自带的console执行
         $arc = getopt('a:b:c:d:e:f:g');

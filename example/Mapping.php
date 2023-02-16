@@ -7,6 +7,23 @@ class Mapping
     //类型
     public $type = 0;
 
+    //默认配置项
+    const MAIN_CONFIG = [
+        'm_conf' => 'mysql_conf_default',     // 获取mysql 配置
+        'ck_conf' => 'ck_conf_default',       // 获取clickhouse 配置
+        'mo_conf' => 'mongo_conf_default',    // 获取mongo 配置
+        'ck_db' => 'default',                 // 获取clickhouse 数据库
+        'mo_db' => 'default',                 // 获取mongo 数据库
+        'm_table' => '',                      // 获取mysql 库名和表名
+        'ck_table' => '',                     // 获取clickhouse表名
+        'mo_table' => '',                     // 获取mongo表名
+        'primary_key' => 'id',                // 获取主键名称
+        'time_key' => 'create_time',          // 获取增量更新依据的时间字段
+        'time_key_type' => 'int',             // 获取时间键的类型 【int 时间戳 | date 2022-02-01 00:00:00】
+        'single_search' => 10000,             // 获取单次搜索的数量
+        'fields' => '',                       // 获取需要插入的字段 空 表示映射的所有字段
+    ];
+
     /**********************************新增数据模型 START *****************************************************/
     const TYPE_QQ_ACCESS = 10;                                // 扫码表
     const TYPE_QQ_USER = 20;                                  // 用户表
@@ -50,10 +67,11 @@ class Mapping
                 'mo_table' => 'change_product_price',
                 'ck_table' => 'dcm_price_change_history',
                 'time_key' => 'created_at',
+                'time_key_type' => 'date',
                 'primary_key' => '_id'
             ],
         ];
-        return $data[$this->type][$field] ?? '';
+        return $data[$this->type][$field] ?? self::MAIN_CONFIG[$field];
     }
 
     /**********************************新增数据模型 END *****************************************************/

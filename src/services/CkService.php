@@ -4,7 +4,6 @@ namespace TransCk\services;
 
 use TransCk\db\MongoDb;
 use TransCk\db\MysqlDb;
-use TransCk\Mapping;
 
 class CkService extends Base
 {
@@ -38,17 +37,11 @@ class CkService extends Base
     {
         $timeStart = date("Y-m-d", strtotime("-1 day")) . ' 00:00:00';
         $timeEnd = date("Y-m-d") . ' 00:00:00 ';
-        if ($this->time_key_type == 'int') {
-            $where =
-                $this->time_key . ' > ' . strtotime($timeStart) . ' and ' .
-                $this->time_key . ' <= ' . strtotime($timeEnd);
-        } else {
-            $where =
-                $this->time_key . ' > ' . $timeStart . ' and ' .
-                $this->time_key . ' <= ' . $timeEnd;
-        }
-        ini_set('memory_limit', '1048M');
-        $this->insertData($where);
+        $where = [
+            $this->time_key . ' > ' => $this->time_key_type == 'int' ? strtotime($timeStart) : $timeStart,
+            $this->time_key . ' <= ' => $this->time_key_type == 'int' ? strtotime($timeEnd) : $timeEnd,
+        ];
+        $this->insertData($where, implode('|', $where));
     }
 
     /**
@@ -59,16 +52,11 @@ class CkService extends Base
     {
         $timeStart = date("Y-m-d H", strtotime("-1 hour")) . ':00:00';
         $timeEnd = date("Y-m-d H") . ':00:00';
-        if ((new Mapping())->getConfig('time_key_type') == 'int') {
-            $where =
-                $this->time_key . ' > ' . strtotime($timeStart) . ' and ' .
-                $this->time_key . ' <= ' . strtotime($timeEnd);
-        } else {
-            $where =
-                $this->time_key . ' > ' . $timeStart . ' and ' .
-                $this->time_key . ' <= ' . $timeEnd;
-        }
-        $this->insertData($where);
+        $where = [
+            $this->time_key . ' > ' => $this->time_key_type == 'int' ? strtotime($timeStart) : $timeStart,
+            $this->time_key . ' <= ' => $this->time_key_type == 'int' ? strtotime($timeEnd) : $timeEnd,
+        ];
+        $this->insertData($where, implode('|', $where));
     }
 
     /**
@@ -78,24 +66,11 @@ class CkService extends Base
      */
     public function incrementalDataBySelf($params)
     {
-        $timeStart = $params['timeStart'];
-        $timeEnd = $params['timeEnd'];
-
-        if ($this->time_key_type == 'int') {
-            $where =
-                $this->time_key . ' > ' . strtotime($timeStart) . ' and ' .
-                $this->time_key . ' <= ' . strtotime($timeEnd);
-            $logWhere = $this->time_key . ' >= ' . $timeStart . ' and ' .
-                $this->time_key . ' <= ' . $timeEnd;
-        } else {
-            $where =
-                $this->time_key . ' > ' . $timeStart . ' and ' .
-                $this->time_key . ' <= ' . $timeEnd;
-            $logWhere = $where;
-        }
-
-        ini_set('memory_limit', '1048M');
-        $this->insertData($where, $logWhere);
+        $where = [
+            $this->time_key . ' > ' => $this->time_key_type == 'int' ? strtotime($params['timeStart']) : $params['timeStart'],
+            $this->time_key . ' <= ' => $this->time_key_type == 'int' ? strtotime($params['timeEnd']) : $params['timeEnd'],
+        ];
+        $this->insertData($where, implode('|', $where));
     }
 
     /**
@@ -253,17 +228,26 @@ class CkService extends Base
 
     /**
      * 判断是否有重复数据 有则剔除重复数据
-     * @param $mysqlData
+     * @param $data
      * @param string $where
      * @return array
      */
-    public function checkRepeat($mysqlData, $where)
+    public function checkRepeat($data, $where)
     {
         $primaryKey = $this->primary_key;
         $ckTable = $this->ck_table;
         $where = $where ? $where : ' 1=1 ';
-        $ckData = $this->conn->select("SELECT {$primaryKey} FROM {$ckTable} WHERE {$where} ");
+        if (is_array($where)) {
+            $whereStr = '';
+            foreach ($where as $key => $value) {
+                $whereStr .= $key . " '" . $value . "' AND ";
+            }
+            $whereStr = trim($whereStr, 'AND ');
+        } else {
+            $whereStr = $where;
+        }
 
+        $ckData = $this->conn->select("SELECT {$primaryKey} FROM {$ckTable} WHERE {$whereStr} ");
         $ckIds = [];
         if (!empty($ckData->rawData()['data'])) {
             $ckIds = array_column($ckData->rawData()['data'], $primaryKey);
@@ -271,7 +255,7 @@ class CkService extends Base
 
         $dirtyCount = 0;
         if (!empty($ckIds)) {
-            $newData = array_column($mysqlData, null, $primaryKey);
+            $newData = array_column($data, null, $primaryKey);
             $insertIds = array_flip(array_diff(array_keys($newData), $ckIds));
             $resData = [];
             foreach ($newData as $key => $datum) {
@@ -283,7 +267,7 @@ class CkService extends Base
             }
             return [$resData, $dirtyCount];
         }
-        return [$mysqlData, $dirtyCount];
+        return [$data, $dirtyCount];
     }
 }
 

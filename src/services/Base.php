@@ -7,6 +7,8 @@ use TransCk\db\ClickhouseDb;
 
 class Base
 {
+    protected $conn = '';
+
     //默认配置项
     public $m_conf = 'mysql_conf_default';    // 获取mysql 配置
     public $ck_conf = 'ck_conf_default';      // 获取clickhouse 配置
@@ -22,9 +24,6 @@ class Base
     public $single_search = 10000;            // 获取单次搜索的数量
     public $fields = '';                      // 获取需要插入的字段 空 表示映射的所有字段
 
-    protected $conn = '';
-    public $type = 0;
-
     public function __construct($type = 0)
     {
         //引入映射文件
@@ -39,22 +38,20 @@ class Base
         $mapping->type = $type;
 
         //加载配置
-        $this->m_conf = $mapping->getConfig('m_conf') ?: $this->m_conf;
-        $this->mo_conf = $mapping->getConfig('mo_conf') ?: $this->mo_conf;
-        $this->ck_conf = $mapping->getConfig('ck_conf') ?: $this->ck_conf;
-        $this->ck_db = $mapping->getConfig('ck_db') ?: $this->ck_db;
-        $this->mo_db = $mapping->getConfig('mo_db') ?: $this->mo_db;
-        $this->m_table = $mapping->getConfig('m_table') ?: $this->m_table;
-        $this->mo_table = $mapping->getConfig('mo_table') ?: $this->mo_table;
-        $this->ck_table = $mapping->getConfig('ck_table') ?: $this->ck_table;
-        $this->primary_key = $mapping->getConfig('primary_key') ?: $this->primary_key;
-        $this->time_key = $mapping->getConfig('time_key') ?: $this->time_key;
-        $this->time_key_type = $mapping->getConfig('time_key_type') ?: $this->time_key_type;
-        $this->single_search = $mapping->getConfig('single_search') ?: $this->single_search;
-
+        $this->m_conf = $mapping->getConfig('m_conf');
+        $this->mo_conf = $mapping->getConfig('mo_conf');
+        $this->ck_conf = $mapping->getConfig('ck_conf');
+        $this->ck_db = $mapping->getConfig('ck_db');
+        $this->mo_db = $mapping->getConfig('mo_db');
+        $this->m_table = $mapping->getConfig('m_table');
+        $this->mo_table = $mapping->getConfig('mo_table');
+        $this->ck_table = $mapping->getConfig('ck_table');
+        $this->primary_key = $mapping->getConfig('primary_key');
+        $this->time_key = $mapping->getConfig('time_key');
+        $this->time_key_type = $mapping->getConfig('time_key_type');
+        $this->single_search = $mapping->getConfig('single_search');
         //连接clickhouse资源
         $this->conn = (new ClickhouseDb($this->ck_conf))->CkDB($this->ck_db);
     }
-
 
 }
